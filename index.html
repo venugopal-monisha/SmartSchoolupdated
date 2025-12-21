@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Academy - Complete Student Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #2c3e50; }
+        
+        /* Header & Navigation */
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; }
+        .logo { font-size: 1.8rem; font-weight: bold; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 2rem; }
+        nav ul li a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 25px; transition: all 0.3s ease; display: block; }
+        nav ul li a:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+        /* Main Content */
+        main { margin-top: 80px; }
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero-school.jpg') center/cover;
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            color: white; 
+        }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem; animation: fadeInUp 1s ease; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; animation: fadeInUp 1s ease 0.2s both; }
+        .cta-btn { background: #ff6b6b; color: white; padding: 1rem 2.5rem; border: none; border-radius: 50px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(255,107,107,0.4); }
+
+        /* Sections */
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+        h2 { color: #667eea; font-size: clamp(1.8rem, 3vw, 2.5rem); text-align: center; margin-bottom: 3rem; position: relative; }
+        h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: #ff6b6b; border-radius: 2px; }
+
+        /* Grid Layout */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #667eea, #ff6b6b); }
+        .card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+
+        /* Gallery - FIXED WITH REAL IMAGES */
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .gallery img { 
+            width: 100%; 
+            height: 250px; 
+            object-fit: cover; 
+            border-radius: 15px; 
+            transition: all 0.4s ease; 
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .gallery img:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+        }
+
+        /* Forms */
+        form { background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); max-width: 600px; margin: 0 auto; }
+        input, select, textarea { width: 100%; padding: 1rem; margin-bottom: 1.5rem; border: 2px solid #e1e8ed; border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
+        button { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem 2.5rem; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; transition: all 0.3s ease; width: 100%; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102,126,234,0.4); }
+
+        /* Geolocation Styles */
+        .geo-section { background: #f8f9ff; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #667eea; }
+        #map { height: 300px; width: 100%; border-radius: 10px; margin-top: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .geo-info { background: white; padding: 1.5rem; border-radius: 10px; margin: 1rem 0; }
+        #savedForms { margin-top: 2rem; }
+        .saved-item { background: linear-gradient(135deg, #f8f9ff, #e8ecff); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid #667eea; }
+
+        /* Events List */
+        .events-list{ list-style:none; padding:0; margin:0 auto; max-width:900px; }
+        .event-item{ position:relative; background:white; border-radius:18px; padding:1.8rem 2rem 1.8rem 3.5rem; margin-bottom:1.8rem; box-shadow:0 12px 30px rgba(0,0,0,0.08); transition:all 0.35s ease; }
+        .event-item::before{ content:""; position:absolute; left:18px; top:28px; width:14px; height:14px; background:#667eea; border-radius:50%; box-shadow:0 0 0 6px rgba(102,126,234,0.15); }
+        .event-item:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.15); }
+        .event-item h4{ margin-bottom:0.3rem; font-size:1.2rem; color:#2c3e50; }
+        .event-item p strong{ color:#667eea; }
+        .event-item p{ margin:0.2rem 0; color:#555; }
+
+        /* Contact Grid */
+        .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+        @media(max-width:768px){ .contact-grid{ grid-template-columns:1fr; } }
+
+        /* Footer */
+        footer { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem 2rem 2rem; color: white; text-align: center; }
+        .social-links { margin: 2rem 0; }
+        .social-links a { color: white; font-size: 1.5rem; margin: 0 1rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: #ff6b6b; transform: translateY(-3px); }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: ease forwards; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; padding: 1rem; }
+            nav ul { margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 0.5rem 1rem; }
+            .hero { padding: 0 1rem; text-align: center; }
+            .container { padding: 2rem 1rem; }
+            .grid { grid-template-columns: 1fr; }
+            .event-item{ padding:1.5rem 1.5rem 1.5rem 3rem; }
+        }
+        @media (max-width: 480px) { .hero h1 { font-size: 2rem; } .gallery img { height: 200px; } }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) { 
+            body { background: #1a1a1a; color: #e1e8ed; } 
+            .card, form { background: #2d3748; }
+            .event-item { background: #2d3748; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <div class="logo"> SMART SCHOOL</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#admission">Admission</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <h1 class="fade-in">Welcome to Smart School</h1>
+            <p class="fade-in">Your Future Starts Here - Excellence in Education Since 1990</p>
+            <a href="#admission" class="cta-btn">Apply Now</a>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="container">
+            <h2>About Us</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <h3>🎯 Our Mission</h3>
+                    <p>Empowering students with quality education, innovative teaching methods, and holistic development to excel in a competitive world.</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>🌟 Our Vision</h3>
+                    <p>Becoming a globally recognized institution fostering academic excellence, research innovation, and character building.</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>🏆 Achievements</h3>
+                    <p>Ranked #1 in Kolar for 5 consecutive years. 98% results record. 2000+ Students 200+ Staffs.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admission Process -->
+        <section id="admission" class="container">
+            <h2>Admission Process</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <h3>📝 Step 1: Application</h3>
+                    <p>Fill online application form with personal and academic details. Application fee: ₹500</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>✍️ Step 2: Entrance Test</h3>
+                    <p>Appear for Excel Entrance Exam (EEE) - 2 hours, MCQ based. Syllabus: 10+2 level</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>🎤 Step 3: Interview</h3>
+                    <p>Personal interview with admission panel. Assess communication skills and career goals.</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>✅ Step 4: Enrollment</h3>
+                    <p>Document verification and fee payment. Join orientation program. Welcome to School!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Offered -->
+        <section id="courses" class="container">
+            <h2>Courses Offered</h2>
+            <div class="grid">
+                <div class="card fade-in">
+                    <h3>🧸 Pre-Primary (KG)</h3>
+                    <p><strong>Classes:</strong> LKG & UKG<br><strong>Focus:</strong> Play-based learning, basic literacy & numeracy, creativity<br><strong>Age Group:</strong> 3–5 years</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>📘 Primary School</h3>
+                    <p><strong>Classes:</strong> I–V<br><strong>Subjects:</strong> English, Mathematics, EVS, General Knowledge, Computer Basics<br><strong>Focus:</strong> Strong foundation & skill development</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>📗 Middle School</h3>
+                    <p><strong>Classes:</strong> VI–VIII<br><strong>Subjects:</strong> Maths, Science, Social Studies, English, Computer Science<br><strong>Focus:</strong> Concept clarity & analytical skills</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>📕 Secondary School</h3>
+                    <p><strong>Classes:</strong> IX–X<br><strong>Board:</strong> CBSE / State Board<br><strong>Subjects:</strong> Maths, Science, Social Science, English, IT</p>
+                </div>
+                <div class="card fade-in">
+                    <h3>🎓 Higher Secondary</h3>
+                    <p><strong>Classes:</strong> XI–XII<br><strong>Streams:</strong> Science | Commerce | Arts<br><strong>Career Focus:</strong> Competitive exams & higher education</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Campus Gallery - ✅ IMAGES NOW WORKING -->
+        <section id="gallery" class="container">
+            <h2>Campus Gallery</h2>
+            <div class="gallery">
+                <img src="admission.jpg" alt="Admission Office" onclick="openModal(this.src, 'Admission Office')">
+                <img src="campus.jpg" alt="Main Campus" onclick="openModal(this.src, 'Main Campus')">
+                <img src="classroom.jpg" alt="Modern Classroom" onclick="openModal(this.src, 'Modern Classroom')">
+                <img src="lab.jpg" alt="Science Laboratory" onclick="openModal(this.src, 'Science Laboratory')">
+                <img src="sports.jpg" alt="Sports Complex" onclick="openModal(this.src, 'Sports Complex')">
+                <img src="contact.jpg" alt="Contact & Admin" onclick="openModal(this.src, 'Contact & Admin')">
+                <img src="hero-school.jpg" alt="School Hero" onclick="openModal(this.src, 'Main Entrance')">
+            </div>
+        </section>
+
+        <!-- Events & Notices -->
+        <section id="events" class="container">
+            <h2>Upcoming Events & Notices</h2>
+            <ul class="events-list" id="eventsList"></ul>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button onclick="addNewEvent()" class="cta-btn" style="width: auto; padding: 0.8rem 2rem;"> New Event</button>
+            </div>
+        </section>
+
+        <!-- Contact Form with Geolocation -->
+        <section id="contact" class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-grid">
+                <!-- GEO LOCATION -->
+                <div class="geo-section">
+                    <h3>📍 Location</h3>
+                    <button id="getLocationBtn" type="button" class="cta-btn" style="width:auto;padding:0.8rem 2rem;margin-bottom:1rem;">
+                        🔍 Get Location
+                    </button>
+                    <div id="geoInfo" class="geo-info" style="display:none;">
+                        <p><strong>Latitude:</strong> <span id="lat">-</span></p>
+                        <p><strong>Longitude:</strong> <span id="lon">-</span></p>
+                        <p><strong>Accuracy:</strong> <span id="accuracy">-</span> meters</p>
+                    </div>
+                    <div id="map" style="display:none;"></div>
+                </div>
+
+                <!-- CONTACT FORM -->
+                <form id="contactForm">
+                    <input type="text" id="name" placeholder="Full Name *" required>
+                    <input type="email" id="email" placeholder="Email Address *" required>
+                    <input type="tel" id="phone" placeholder="Phone Number">
+                    <input type="text" id="location" placeholder="Location (Auto-filled by GPS)" readonly>
+                    <select id="course" required>
+                        <option value="">Select Class</option>
+                        <option value="lkg-ukg">LKG / UKG</option>
+                        <option value="primary">Class I–V</option>
+                        <option value="middle">Class VI–VIII</option>
+                        <option value="secondary">Class IX–X</option>
+                        <option value="higher-secondary">Class XI–XII</option>
+                    </select>
+                    <textarea id="message" placeholder="Your Message *" rows="5" required></textarea>
+                    <button type="submit">Send Enquiry</button>
+                </form>
+            </div>
+
+            <!-- Saved Forms -->
+            <div id="savedForms" style="margin-top: 3rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">📋 Saved Enquiries</h3>
+                <div id="formsList"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Image Modal -->
+    <div id="imageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; justify-content:center; align-items:center;">
+        <span onclick="closeModal()" style="position:absolute; top:20px; right:30px; color:white; font-size:2rem; cursor:pointer;">&times;</span>
+        <img id="modalImg" style="max-width:90%; max-height:90%; border-radius:10px;">
+        <p id="modalCaption" style="position:absolute; bottom:20px; color:white; text-align:center; width:100%; font-size:1.2rem;"></p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <h3>Smart School, Kolar</h3>
+            <p>📞 +91-12345-67890 | ✉️ info@smartschool.in</p>
+            <div class="social-links">
+            <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+<a href="https://www.instagram.com/" target="_blank">Instagram</a>
+<a href="https://twitter.com/" target="_blank">Twitter</a>
+<a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+
+            </div>
+            <p id="currentTime" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;"></p>
+            <p>&copy; 2025 Excel Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Types Demo
+        const schoolName = "Excel Academy";
+        const totalSeats = 120;
+        const admissionOpen = true;
+        const coursesList = ["LKG-UKG", "Primary", "Middle", "Secondary", "Higher Secondary"];
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(link.getAttribute('href'));
+                    target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            updateClock();
+            loadEvents();
+            loadSavedForms();
+            setInterval(updateClock, 1000);
+            fadeInOnScroll();
+            document.getElementById('getLocationBtn').addEventListener('click', getCurrentLocation);
+        });
+
+        // GEOLOCATION - FIXED VERSION
+        function getCurrentLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation not supported by this browser');
+                return;
+            }
+
+            const btn = document.getElementById('getLocationBtn');
+            btn.disabled = true;
+            btn.textContent = '🔄 Locating...';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude, accuracy } = position.coords;
+                    document.getElementById('lat').textContent = latitude.toFixed(6);
+                    document.getElementById('lon').textContent = longitude.toFixed(6);
+                    document.getElementById('accuracy').textContent = accuracy.toFixed(0);
+                    document.getElementById('location').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+                    
+                    document.getElementById('geoInfo').style.display = 'block';
+                    createMap(latitude, longitude);
+                    
+                    btn.textContent = '📍 Location Updated';
+                    btn.disabled = false;
+                    alert('✅ Location detected successfully!');
+                },
+                (error) => {
+                    let message = 'Location error: ';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED: message += "Location access denied"; break;
+                        case error.POSITION_UNAVAILABLE: message += "Location unavailable"; break;
+                        case error.TIMEOUT: message += "Location timeout"; break;
+                    }
+                    alert(message);
+                    btn.textContent = '🔍 Get My Location';
+                    btn.disabled = false;
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+            );
+        }
+
+        function createMap(lat, lon) {
+            const mapDiv = document.getElementById('map');
+            mapDiv.innerHTML = `
+                <iframe width="100%" height="300" style="border:0; border-radius:10px;" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.0!2d${lon}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z${lat}%2C${lon}!5e0!3m2!1sen!2sin!4v1630000000000" allowfullscreen="" loading="lazy"></iframe>
+            `;
+            mapDiv.style.display = 'block';
+        }
+
+        // Form Handling with LocalStorage
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (validateForm()) {
+                const formData = {
+                    id: Date.now(),
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value || 'N/A',
+                    location: document.getElementById('location').value || 'N/A',
+                    course: document.getElementById('course').value,
+                    message: document.getElementById('message').value,
+                    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+                };
+                saveFormData(formData);
+                alert('✅ Enquiry saved successfully ');
+                document.getElementById('contactForm').reset();
+                loadSavedForms();
+            }
+        });
+
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            
+            if (name.length < 2) { alert('Name must be at least 2 characters'); return false; }
+            if (!email.includes('@') || !email.includes('.')) { alert('Enter valid email'); return false; }
+            if (phone && !/^\d{10}$/.test(phone.replace(/\D/g, ''))) { alert('Phone must be 10 digits'); return false; }
+            return true;
+        }
+
+        function saveFormData(formData) {
+            let forms = JSON.parse(localStorage.getItem('schoolEnquiries') || '[]');
+            forms.unshift(formData);
+            localStorage.setItem('schoolEnquiries', JSON.stringify(forms.slice(0, 20)));
+        }
+
+        function loadSavedForms() {
+            const forms = JSON.parse(localStorage.getItem('schoolEnquiries') || '[]');
+            document.getElementById('formsList').innerHTML = 
+                forms.map(form => `
+                    <div class="saved-item">
+                        <h4>${form.name} - ${form.course}</h4>
+                        <p><strong>Email:</strong> ${form.email} | <strong>Phone:</strong> ${form.phone} | <strong>Location:</strong> ${form.location}</p>
+                        <p><small>${form.timestamp}</small></p>
+                        <button onclick="deleteForm(${form.id})" style="background:#ff6b6b;color:white;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">Delete</button>
+                    </div>
+                `).join('') || '<p style="text-align:center;color:#666;">No saved enquiries yet. Submit a form to see them here.</p>';
+        }
+
+        function deleteForm(id) {
+            if (confirm('Delete this enquiry?')) {
+                let forms = JSON.parse(localStorage.getItem('schoolEnquiries') || '[]');
+                forms = forms.filter(f => f.id !== id);
+                localStorage.setItem('schoolEnquiries', JSON.stringify(forms));
+                loadSavedForms();
+            }
+        }
+
+        // Events Management
+        const eventsData = [
+            { id: 1, title: 'Admission Open 2026', date: 'Dec 21, 2025 - Feb 15, 2026', desc: 'Apply now for all classes' },
+            { id: 2, title: 'Annual Sports Day', date: 'Jan 15, 2026', desc: 'Inter-school sports competition & cultural fest' },
+            { id: 3, title: 'Science Exhibition', date: 'Feb 10, 2026', desc: 'Student projects showcase & expert talks' }
+        ];
+
+        function loadEvents() {
+            const saved = localStorage.getItem('academyEvents');
+            if (saved) eventsData.push(...JSON.parse(saved));
+            displayEvents();
+        }
+
+        function displayEvents() {
+            const container = document.getElementById('eventsList');
+            const limitedEvents = eventsData.slice(0, 3);
+            container.innerHTML = limitedEvents.map(event => `
+                <li class="event-item">
+                    <h4>${event.title}</h4>
+                    <p><strong>Date:</strong> ${event.date}</p>
+                    <p>${event.desc}</p>
+                </li>
+            `).join('');
+        }
+
+        function addNewEvent() {
+            const topics = ['Maths', 'Science', 'Arts', 'AI', 'Robotics'];
+            const newEvent = {
+                id: Date.now(),
+                title: `Workshop on ${topics[Math.floor(Math.random() * topics.length)]}`,
+                date: new Date(Date.now() + Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+                desc: 'Join our expert-led interactive session'
+            };
+            eventsData.unshift(newEvent);
+            localStorage.setItem('academyEvents', JSON.stringify(eventsData.slice(0, 10)));
+            displayEvents();
+        }
+
+        // Utility Functions
+        function updateClock() {
+            document.getElementById('currentTime').textContent = 
+                `Last updated: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} | Online: ${navigator.onLine ? '✅' : '❌'}`;
+        }
+
+        function fadeInOnScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            });
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+
+        // Image Modal
+        function openModal(src, caption) {
+            const modal = document.getElementById('imageModal');
+            document.getElementById('modalImg').src = src;
+            document.getElementById('modalCaption').textContent = caption;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Network Status
+        window.addEventListener('online', () => setTimeout(() => alert('🌐 Back online!'), 500));
+        window.addEventListener('offline', () => alert('⚠️ You are now offline.'));
+    </script>
+</body>
+</html>
