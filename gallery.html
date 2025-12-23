@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Smart School Kolar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="./school.png" type="image/png">
+
+</head>
+<body>
+    <!-- Same header as index.html -->
+    <header>
+        <nav>
+            <div class="logo">SMART SCHOOL</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="admission.html">Admission</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+           <section id="gallery" class="container">
+            <h2>Campus Gallery</h2>
+            <div class="gallery">
+                <img src="admission.jpg" alt="Admission Office" onclick="openModal(this.src, 'Admission Office')">
+                <img src="campus.jpg" alt="Main Campus" onclick="openModal(this.src, 'Main Campus')">
+                <img src="classroom.jpg" alt="Modern Classroom" onclick="openModal(this.src, 'Modern Classroom')">
+                <img src="lab.jpg" alt="Science Laboratory" onclick="openModal(this.src, 'Science Laboratory')">
+                <img src="sports.jpg" alt="Sports Complex" onclick="openModal(this.src, 'Sports Complex')">
+                <img src="contact.jpg" alt="Contact & Admin" onclick="openModal(this.src, 'Contact & Admin')">
+                <img src="hero-school.jpg" alt="School Hero" onclick="openModal(this.src, 'Main Entrance')">
+            </div>
+        </section>
+
+
+  
+    <!-- Same footer as index.html -->
+   <footer>
+        <div class="container">
+            <h3>Smart School, Kolar</h3>
+            <p>📞 +91-12345-67890 | ✉️ info@smartschool.in</p>
+            <div class="social-links">
+            <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+<a href="https://www.instagram.com/" target="_blank">Instagram</a>
+<a href="https://twitter.com/" target="_blank">Twitter</a>
+<a href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+
+            </div>
+            <p id="currentTime" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;"></p>
+            <p>&copy; 2025 Excel Academy. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+</html>
